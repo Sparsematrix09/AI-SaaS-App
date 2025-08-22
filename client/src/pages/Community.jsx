@@ -23,11 +23,8 @@ const Community = () => {
       const { data } = await axios.get('/api/user/get-published-creations', {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
-      if (data.success) {
-        setCreations(data.creations);
-      } else {
-        toast.error(data.message);
-      }
+      if (data.success) setCreations(data.creations);
+      else toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
     }
@@ -53,10 +50,7 @@ const Community = () => {
         { id },
         { headers: { Authorization: `Bearer ${await getToken()}` } }
       );
-
-      if (!data.success) {
-        toast.error(data.message);
-      }
+      if (!data.success) toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
     }
@@ -65,7 +59,6 @@ const Community = () => {
   const handleKeyDown = useCallback(
     (e) => {
       if (expandedIndex === null) return;
-
       if (e.key === 'ArrowLeft' && expandedIndex > 0) {
         setExpandedIndex((prev) => prev - 1);
         setIsImageLoaded(false);
@@ -90,15 +83,15 @@ const Community = () => {
   }, [handleKeyDown]);
 
   return (
-    <div className='flex-1 h-full flex flex-col gap-4 p-6'>
-      <h2 className='text-xl font-semibold'>Creations</h2>
+    <div className="flex-1 h-full flex flex-col gap-4 p-6 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white rounded-xl shadow-lg">
+      <h2 className="text-2xl font-bold mb-2">Community Creations</h2>
 
-      <div className='bg-white h-full w-full rounded-xl overflow-y-scroll p-4 flex flex-wrap'>
+      <div className="backdrop-blur-md bg-white/10 h-full w-full rounded-xl overflow-y-auto p-4 flex flex-wrap gap-4">
         {!loading ? (
           creations.map((creation, index) => (
             <div
               key={index}
-              className='relative group inline-block pl-3 pt-3 w-full sm:max-w-1/2 lg:max-w-1/3'
+              className="relative group cursor-pointer w-full sm:w-[48%] lg:w-[32%] rounded-xl overflow-hidden shadow-md hover:scale-[1.02] transition-all duration-300"
               onClick={() => {
                 setExpandedIndex(index);
                 setIsImageLoaded(false);
@@ -106,22 +99,21 @@ const Community = () => {
             >
               <img
                 src={creation.content}
-                alt='Creation'
-                className='w-full h-full object-cover rounded-lg cursor-pointer'
+                alt="Creation"
+                className="w-full h-60 object-cover rounded-xl"
               />
-
-              <div className='absolute bottom-0 top-0 right-0 left-3 flex gap-2 items-end justify-end group-hover:justify-between p-3 group-hover:bg-gradient-to-b from-transparent to-black/80 text-white rounded-lg'>
-                <p className='text-sm hidden group-hover:block'>{creation.prompt}</p>
-                <div className='flex gap-1 items-center'>
-                  <p>{creation.likes.length}</p>
+              <div className="absolute inset-0 flex flex-col justify-end p-3 opacity-0 group-hover:opacity-100 transition bg-gradient-to-t from-black/70 via-black/40 to-transparent">
+                <p className="text-sm mb-2">{creation.prompt}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm">{creation.likes.length}</p>
                   <Heart
                     onClick={(e) => {
                       e.stopPropagation();
                       imageLikeToggle(creation.id);
                     }}
-                    className={`min-w-5 h-5 hover:scale-110 cursor-pointer ${
+                    className={`min-w-5 h-5 hover:scale-125 transition ${
                       creation.likes.includes(user.id)
-                        ? 'fill-red-500 text-red-600'
+                        ? 'fill-red-500 text-red-500'
                         : 'text-white'
                     }`}
                   />
@@ -133,16 +125,10 @@ const Community = () => {
           [...Array(6)].map((_, i) => (
             <div
               key={i}
-              className='inline-block pl-3 pt-3 w-full sm:max-w-1/2 lg:max-w-1/3'
+              className="w-full sm:w-[48%] lg:w-[32%] rounded-xl overflow-hidden"
             >
-              <Skeleton
-                variant='rectangular'
-                animation='wave'
-                width='100%'
-                height={200}
-                className='rounded-lg'
-              />
-              <Skeleton width='60%' />
+              <Skeleton variant="rectangular" animation="wave" width="100%" height={200} className="rounded-lg" />
+              <Skeleton width="60%" />
             </div>
           ))
         )}
@@ -152,27 +138,27 @@ const Community = () => {
       <AnimatePresence>
         {expandedIndex !== null && creations[expandedIndex] && (
           <motion.div
-            key='expanded-image'
-            className='fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4'
+            key="expanded-image"
+            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className='relative max-w-full max-h-full flex items-center justify-center'>
+            <div className="relative max-w-full max-h-full flex items-center justify-center">
               {!isImageLoaded && (
-                <div className='absolute inset-0 flex items-center justify-center'>
-                  <div className='w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin' />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin" />
                 </div>
               )}
 
               <motion.img
                 key={creations[expandedIndex].id}
                 src={creations[expandedIndex].content}
-                alt='Expanded'
+                alt="Expanded"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: isImageLoaded ? 1 : 0 }}
                 onLoad={() => setIsImageLoaded(true)}
-                className='max-w-full max-h-[80vh] rounded-lg shadow-lg transition-all duration-300'
+                className="max-w-full max-h-[80vh] rounded-xl shadow-2xl"
               />
 
               <button
@@ -180,7 +166,7 @@ const Community = () => {
                   setExpandedIndex(null);
                   setIsImageLoaded(false);
                 }}
-                className='absolute top-3 right-3 bg-white rounded-full p-1 text-black hover:scale-110 transition'
+                className="absolute top-3 right-3 bg-white text-black rounded-full p-2 hover:scale-110 transition"
               >
                 <X size={20} />
               </button>
@@ -191,7 +177,7 @@ const Community = () => {
                     setExpandedIndex((prev) => prev - 1);
                     setIsImageLoaded(false);
                   }}
-                  className='absolute top-1/2 left-3 -translate-y-1/2 bg-white rounded-full p-1 text-black hover:scale-110 transition'
+                  className="absolute top-1/2 left-3 -translate-y-1/2 bg-white text-black rounded-full p-2 hover:scale-110 transition"
                 >
                   <ArrowLeft size={20} />
                 </button>
@@ -203,7 +189,7 @@ const Community = () => {
                     setExpandedIndex((prev) => prev + 1);
                     setIsImageLoaded(false);
                   }}
-                  className='absolute top-1/2 right-3 -translate-y-1/2 bg-white rounded-full p-1 text-black hover:scale-110 transition'
+                  className="absolute top-1/2 right-3 -translate-y-1/2 bg-white text-black rounded-full p-2 hover:scale-110 transition"
                 >
                   <ArrowRight size={20} />
                 </button>
