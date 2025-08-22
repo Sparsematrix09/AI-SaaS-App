@@ -48,34 +48,36 @@ const WriteArticle = () => {
   };
 
   return (
-    <div className="h-full overflow-y-scroll p-6 flex items-start flex-wrap gap-4 text-slate-700">
+    <div className="h-full overflow-y-scroll p-6 flex items-start flex-wrap gap-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-200">
       {/* Left Column */}
       <form
         onSubmit={onSubmitHandler}
-        className="w-full max-w-lg p-4 bg-white rounded-lg border border-gray-200"
+        className="w-full max-w-lg p-5 bg-gray-800/80 rounded-xl border border-gray-700 shadow-xl backdrop-blur-sm"
       >
         <div className="flex items-center gap-3">
-          <Sparkles className="w-6 text-[#4A7AFF]" />
-          <h1 className="text-xl font-semibold">Article Configuration</h1>
+          <Sparkles className="w-6 text-violet-400" />
+          <h1 className="text-xl font-semibold text-gray-100">Article Configuration</h1>
         </div>
-        <p className="mt-6 text-sm font-medium">Article Topic</p>
+
+        <p className="mt-6 text-sm font-medium text-gray-300">Article Topic</p>
         <input
           onChange={(e) => setInput(e.target.value)}
           value={input}
           type="text"
-          className="w-full p-2 px-3 mt-2 outline-none text-sm rounded-md border border-gray-300"
+          className="w-full p-2 px-3 mt-2 text-sm rounded-md bg-gray-900/60 border border-gray-600 text-gray-100 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-1 focus:ring-violet-400"
           placeholder="The future of artificial intelligence is..."
           required
         />
-        <p className="mt-4 text-sm font-medium">Article Length</p>
-        <div className="mt-3 flex gap-3 flex-wrap sm:max-w-9/11">
+
+        <p className="mt-4 text-sm font-medium text-gray-300">Article Length</p>
+        <div className="mt-3 flex gap-3 flex-wrap">
           {articleLengths.map((item, index) => (
             <span
               onClick={() => setSelectedLength(item)}
-              className={`text-xs px-4 py-1 border rounded-full cursor-pointer ${
+              className={`text-xs px-4 py-1 border rounded-full cursor-pointer transition ${
                 selectedLength.text === item.text
-                  ? 'bg-blue-50 text-blue-700'
-                  : 'text-gray-500 border-gray-300'
+                  ? 'bg-violet-500 text-white border-violet-500 shadow-md'
+                  : 'text-gray-300 border-gray-600 hover:border-violet-400'
               }`}
               key={index}
             >
@@ -83,10 +85,10 @@ const WriteArticle = () => {
             </span>
           ))}
         </div>
-        <br />
+
         <button
           disabled={loading}
-          className="w-full flex items-center justify-center gap-2 mt-6 bg-gradient-to-r from-[#226BFF] to-[#65ADFF] text-white px-4 py-2 rounded-lg cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 mt-6 bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:opacity-90 text-white px-4 py-2 rounded-lg shadow-lg transition disabled:opacity-50"
           type="submit"
         >
           {loading ? (
@@ -99,37 +101,28 @@ const WriteArticle = () => {
       </form>
 
       {/* Right Column */}
-      <div className="w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-88 max-h-[600px]">
+      <div className="w-full max-w-lg p-5 bg-gray-800/80 rounded-xl border border-gray-700 shadow-xl min-h-88 max-h-[600px] flex flex-col">
         <div className="flex items-center gap-3">
-          <Edit className="w-5 h-5 text-[#4A7AFF]" />
-          <h1 className="text-xl font-semibold">Generated Article</h1>
+          <Edit className="w-5 h-5 text-violet-400" />
+          <h1 className="text-xl font-semibold text-gray-100">Generated Article</h1>
         </div>
 
         {loading ? (
-          <div className='mt-4 space-y-3 animate-pulse'>
-            <div className='h-4 bg-gray-200 rounded w-3/4'></div>
-            <div className='h-4 bg-gray-200 rounded w-full'></div>
-            <div className='h-4 bg-gray-200 rounded w-5/6'></div>
-            <div className='h-4 bg-gray-200 rounded w-4/5'></div>
-            <div className='h-4 bg-gray-200 rounded w-2/3'></div>
-            <div className='h-4 bg-gray-200 rounded w-full'></div>
-            <div className='h-4 bg-gray-200 rounded w-3/4'></div>
-            <div className='h-4 bg-gray-200 rounded w-5/6'></div>
-            <div className='h-4 bg-gray-200 rounded w-2/3'></div>
-            <div className='h-4 bg-gray-200 rounded w-full'></div>
+          <div className="mt-4 space-y-3 animate-pulse">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="h-4 bg-gray-700 rounded"></div>
+            ))}
           </div>
         ) : !content ? (
           <div className="flex-1 flex justify-center items-center">
-            <div className="text-sm flex flex-col items-center gap-5 text-gray-400">
+            <div className="text-sm flex flex-col items-center gap-5 text-gray-500">
               <Edit className="w-9 h-9" />
               <p>Enter a topic and Click "Generate Article" to get started</p>
             </div>
           </div>
         ) : (
-          <div className="mt-3 h-full overflow-y-auto text-sm text-slate-600">
-            <div className="reset-tw">
-              <Markdown>{content}</Markdown>
-            </div>
+          <div className="mt-3 h-full overflow-y-auto text-sm text-gray-200">
+            <Markdown>{content}</Markdown>
           </div>
         )}
       </div>
