@@ -29,22 +29,22 @@ const CreationItem = ({ item, onDelete }) => {
   return (
     <div
       onClick={() => setExpanded(!expanded)}
-      className="p-4 w-full bg-white border border-gray-200 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-sm"
+      className="p-4 w-full bg-[#1E293B] border border-gray-700 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md hover:shadow-indigo-500/10"
     >
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         {/* Prompt & Date */}
         <div className="flex-1 w-full">
-          <h2 className="text-base font-medium text-gray-800 break-words">
+          <h2 className="text-base font-medium text-gray-100 break-words">
             {item.prompt}
           </h2>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-gray-400 mt-1">
             {item.type} • {new Date(item.created_at).toLocaleDateString()}
           </p>
         </div>
 
         {/* Type + Trash + Download */}
         <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
-          <span className="bg-[#EFF6FF] border border-[#BFDBFE] text-[#1E40AF] px-3 py-1 text-xs rounded-full">
+          <span className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-3 py-1 text-xs rounded-full">
             {item.type}
           </span>
 
@@ -54,7 +54,7 @@ const CreationItem = ({ item, onDelete }) => {
                 e.stopPropagation();
                 handleDownload();
               }}
-              className="bg-blue-100 text-blue-600 hover:bg-blue-200 p-1 rounded-full"
+              className="bg-gray-700 text-indigo-300 hover:bg-gray-600 p-1 rounded-full transition"
               title="Download image"
             >
               <Download size={16} />
@@ -66,7 +66,7 @@ const CreationItem = ({ item, onDelete }) => {
               e.stopPropagation();
               onDelete(item.id);
             }}
-            className="bg-red-100 text-red-600 hover:bg-red-200 p-1 rounded-full"
+            className="bg-gray-700 text-red-400 hover:bg-gray-600 hover:text-red-300 p-1 rounded-full transition"
             title="Delete"
           >
             <Trash2 size={16} />
@@ -81,11 +81,11 @@ const CreationItem = ({ item, onDelete }) => {
             <img
               src={item.content}
               alt="Generated"
-              className="w-full max-w-md rounded-md object-contain"
+              className="w-full max-w-md rounded-md object-contain border border-gray-700"
             />
           ) : (
-            <div className="mt-2 max-h-60 overflow-y-auto text-sm text-slate-700">
-              <div className="prose prose-sm">
+            <div className="mt-2 max-h-60 overflow-y-auto text-sm text-gray-200">
+              <div className="prose prose-invert prose-sm">
                 <Markdown>{item.content}</Markdown>
               </div>
             </div>
