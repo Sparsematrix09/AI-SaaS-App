@@ -1,15 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 @import "tailwindcss";
-*{
-  font-family: "Outfit", sans-serif;
 
+/* Set global font */
+* {
+  font-family: "Outfit", sans-serif;
 }
-@theme{
+
+/* Default light theme */
+html {
+  color-scheme: light;
+}
+
+/* Dark mode support */
+.dark {
+  color-scheme: dark;
+}
+
+/* Optional: default background & text for body */
+body {
+  @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100;
+}
+body {
+  background-color: #111827; /* dark gray */
+}
+
+/* Define a custom primary color */
+@theme {
   --color-primary: #5044E5;
 }
-.reset-tw, .reset-tw *{
+
+/* Reset Tailwind utility (unchanged) */
+.reset-tw, .reset-tw * {
   all: revert !important;
 }
-.cl-drawerRoot{
-  z-index:10
+
+/* Clerk drawer fix */
+.cl-drawerRoot {
+  z-index: 10;
 }
